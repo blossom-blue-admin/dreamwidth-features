@@ -1,0 +1,69 @@
+{
+  "manifest_version": 2,
+  "name": "Dreamwidth features",
+  "version": "0.8.0",
+  "description": "Utility features for Dreamwidth.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dwext@blossom.blue",
+       "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "contextualIdentities",
+    "cookies",
+    "https://mail.google.com/*",
+    "https://*.dreamwidth.org/*",
+    "https://mail.proton.me/*",
+    "identity"
+  ],
+  "background": {
+    "scripts": [
+      "jquery-3.7.1.min.js",
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+     {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "css": ["content-script.css"],
+      "js": [
+        "jquery-3.7.1.min.js",
+        "gmail-script.js"
+      ]
+    },
+        {
+      "matches": [
+    	"https://*.dreamwidth.org/*"
+      ],
+      "css": ["content-script.css"],
+      "js": [
+        "jquery-3.7.1.min.js",
+        "dreamwidth-script.js"
+      ]
+    },
+        {
+      "matches": [
+        "https://mail.proton.me/*"
+      ],
+      "css": ["content-script.css"],
+      "js": [
+        "jquery-3.7.1.min.js",
+        "proton-script.js"
+      ], "all_frames":true, "match_origin_as_fallback": true 
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="popup.css"/>
+        <script src="jquery-3.7.1.min.js"></script>
+        <script src="popup.js"></script>
+    </head>
+    <body>
+        <div class="outer-wrapper">
+            <div id="settings">
+                <div id="settings-header">
+                    <div id="settings-title">DW HTML helper settings</div>
+                    <div id="settings-controls">
+                    	<div class='checkbox-container'>
+                    		<label><input type="checkbox" id="use-container-open" name="useContainerOpen" value="yes"> GMail container open</label>
+                    		<label><input type="checkbox" id="use-buttons" name="useButtons" value="yes"> Comment helper buttons</label>
+                    		<label><input type="checkbox" id="use-shortcuts" name="useShortcuts" value="yes"> Keyboard helper shortcuts</label>
+                    	</div>
+                        <button id="save-settings">Save</button>
+                        <button id="reset-settings">Reset to defaults</button>
+                        <button id="new-text">New text button</button>
+                        <button id="new-shortcut">New key shortcut</button>
+                    </div>
+                </div>
+                <div id="error-display"></div>
+                <div class="heading text-heading">
+                <div>Text insert buttons (button text/start text/end text) </div>
+                        <button id="clear-text-settings">Clear</button>
+                </div>
+                <div class="settings-group" id="textMaps"></div>
+                <div class="heading shortcut-heading">
+               <div>Keyboard shortcuts (key/button/modifier) </div>
+                        <button id="clear-shortcut-settings">Clear</button>
+                </div>
+                <div class="settings-group" id="shortcutMaps"></div>
+            </div>
+        </div>
+    </body>
+</html>
