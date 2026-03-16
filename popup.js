@@ -207,7 +207,7 @@ async function storeSettings(){
   //    console.log(`unsavedSettings ${JSON.stringify(unsavedSettings)}`);
 
   try {
-      await browser.storage.local.set({ ["settings"] : JSON.stringify(saveSettings) });
+      await chrome.storage.local.set({ ["settings"] : JSON.stringify(saveSettings) });
 //     console.log("settings saved");
    } catch (error) {
 //     // Handle any errors that occurred during the fetch or processing
@@ -362,7 +362,7 @@ function displaySettings(){
 
 /* display previously-saved stored notes on startup */
 function initialize() {
-  let gettingAllStorageItems = browser.storage.local.get(null);
+  let gettingAllStorageItems = chrome.storage.local.get(null);
   gettingAllStorageItems.then((results) => {
  //   console.log(`storage results "${JSON.stringify(results)}"`);
  //   console.log(` settings string "${results.settings}"`);
@@ -405,14 +405,6 @@ function initialize() {
     	saveUseSettings();
     });
 	
-    if((results && results.useContainerOpen && results.useContainerOpen === "yes") || (results && !results.useContainerOpen)){
-    	$("#use-container-open").prop("checked",true);
-    }
-    $("#use-container-open").on("change", (e) =>{
-    	saveUseSettings();
-    });
-	
-	
     $("#new-text").on("click",(e) => {
     	$("select[name='textMap']").prepend('<option value="btn"></option>');
       $("#textMaps").prepend(makeNewTextMapForm());
@@ -446,9 +438,8 @@ function initialize() {
 function saveUseSettings(){
     	const useButtons = $("#use-buttons").prop("checked") ? "yes" : "no";
     	const useShortcuts = $("#use-shortcuts").prop("checked") ? "yes" : "no";
-    	const useContainerOpen = $("#use-container-open").prop("checked") ? "yes" : "no";
     	try {
-    		browser.storage.local.set({useButtons,useShortcuts,useContainerOpen});
+    		chrome.storage.local.set({useButtons,useShortcuts});
     	} catch {
     		displayWarning("Save not completed. Press save button to retry.");
     	}

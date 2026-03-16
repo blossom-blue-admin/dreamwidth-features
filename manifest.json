@@ -17,11 +17,8 @@
     "activeTab",
     "storage",
     "tabs",
-    "contextualIdentities",
     "cookies",
-    "https://mail.google.com/*",
     "https://*.dreamwidth.org/*",
-    "https://mail.proton.me/*",
     "identity"
   ],
   "background": {
@@ -35,16 +32,7 @@
     "default_popup": "popup.html"
   },
   "content_scripts": [
-     {
-      "matches": [
-        "https://mail.google.com/*"
-      ],
-      "css": ["content-script.css"],
-      "js": [
-        "jquery-3.7.1.min.js",
-        "gmail-script.js"
-      ]
-    },
+     
         {
       "matches": [
     	"https://*.dreamwidth.org/*"
@@ -54,16 +42,6 @@
         "jquery-3.7.1.min.js",
         "dreamwidth-script.js"
       ]
-    },
-        {
-      "matches": [
-        "https://mail.proton.me/*"
-      ],
-      "css": ["content-script.css"],
-      "js": [
-        "jquery-3.7.1.min.js",
-        "proton-script.js"
-      ], "all_frames":true, "match_origin_as_fallback": true 
     }
   ]
 }
