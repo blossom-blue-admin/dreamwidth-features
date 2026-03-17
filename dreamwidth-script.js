@@ -11,6 +11,7 @@ let shortcutmap = {};
 let dwStrings = {};
 let useButtons = false;
 let useShortcuts = false;
+//let useDisplayStyle = false;
 let useStore = false;
 let storeData = [];
 let storeCount = 0;
@@ -18,47 +19,70 @@ let storeCount = 0;
 function setupMaps(codemap, shortcutmap) {
     codemap.txt = {
         'start': '<span style="font-family:courier new, monospace">',
-        'end': '</span>'
+        'end': '</span>',
+        'display':false,
+        'index':11
     };
     codemap.action = {
         'start': '<small>[',
-        'end': ']</small>'
+        'end': ']</small>',
+        'display':false,
+        'index':10
     };
     codemap.italic = {
         'start': '<em>',
-        'end': '</em>'
+        'end': '</em>',
+        'display':false,
+        'index':9
     };
     codemap.mdash = {
         'start': '&mdash;',
-        'end': ''
+        'end': '',
+        'display':false,
+        'index':8
     };
     codemap.bold = {
         'start': '<strong>',
-        'end': '</strong>'
+        'end': '</strong>',
+        'display':false,
+        'index':7
     };
     codemap.h4 = {
         'start': '<h4>',
-        'end': '</h4>'
+        'end': '</h4>',
+        'display':false,
+        'index':6
     };
     codemap.h5 = {
         'start': '<h5>',
-        'end': '</h5>'
+        'end': '</h5>',
+        'display':false,
+        'index':5
     };
     codemap.li = {
         'start': '<li>',
-        'end': '</li>'
+        'end': '</li>',
+        'display':false,
+        'index':4
+        
     };
     codemap.ul = {
         'start': '<ul>',
-        'end': '</ul>'
+        'end': '</ul>',
+        'display':false,
+        'index':3
     };
     codemap.link = {
         'start': '<a href="">',
-        'end': '</a>'
+        'end': '</a>',
+        'display':false,
+        'index':2
     };
     codemap.quote = {
         'start': '<blockquote>',
-        'end': '</blockquote>'
+        'end': '</blockquote>',
+        'display':false,
+        'index':1
     };
     shortcutmap.i = {
         textMap: 'italicbtn',
@@ -101,13 +125,13 @@ function setupMaps(codemap, shortcutmap) {
 async function loadDreamwidthSettings() {
     let results = undefined;
     try {
-        const gettingStorageItems = browser.storage.local.get(["useButtons", "useShortcuts","useStore", "settings"]);
+        const gettingStorageItems = chrome.storage.local.get(["useButtons", "useShortcuts","useStore","useDisplayStyle", "settings"]);
         await gettingStorageItems.then((results) => {
             useButtons = (!results.useButtons || results.useButtons === "yes");
             useShortcuts = (!results.useShortcuts && !results.useButtons) ||
                 (useButtons && results.useShortcuts === "yes");
             useStore = (!results.useStore || results.useStore === "yes");
-            
+            useDisplayStyle = (!results.useDisplayStyle || results.useDisplayStyle === "yes");
             codemap = {};
             shortcutmap = {};
             if (results.settings) {
@@ -172,10 +196,12 @@ function addDWCommentButtons(){
 
 	//make the buttons
 	function newButton(key) {
-		return $(`<button type='button'></button>`)
+        const b = $(`<button type='button'></button>`)
 			.prop('id', key + 'btn')
 			.text(key)
 			.on('click', addText);
+        if(codemap[key].display) b.html(codemap[key].start + key + codemap[key].end)
+		return b;
 	}
 	let newDiv = $("#addTextContainer");
 	if (!newDiv || newDiv.length === 0) {

@@ -1,7 +1,7 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Dreamwidth features",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Utility features for Dreamwidth.",
   "browser_specific_settings": {
     "gecko": {
@@ -19,19 +19,19 @@
     "tabs",
     "contextualIdentities",
     "cookies",
-    "https://mail.google.com/*",
-    "https://*.dreamwidth.org/*",
-    "https://mail.proton.me/*",
     "identity"
   ],
+  "host_permissions":[
+    "https://mail.google.com/*",
+    "https://*.dreamwidth.org/*",
+    "https://mail.proton.me/*"],
   "background": {
     "scripts": [
       "jquery-3.7.1.min.js",
       "background.js"
-    ],
-    "persistent": false
+    ]
   },
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html"
   },
   "content_scripts": [

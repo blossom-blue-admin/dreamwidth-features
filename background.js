@@ -5,8 +5,8 @@ function onCIDCreated(context,createOpts) {
 // 	console.log("createOpts: " +JSON.stringify(createOpts));
 //   	console.log(`New identity's ID: ${context.cookieStoreId}.`);
   	createOpts.cookieStoreId = `${context.cookieStoreId}`;
-  	browser.tabs.create(createOpts).catch(() => {
-  		browser.tabs.create({ createOpts });
+  	chrome.tabs.create(createOpts).catch(() => {
+  		chrome.tabs.create({ createOpts });
 	});
 }
 
@@ -27,7 +27,7 @@ function handleMessage(message, sender, sendResponse) {
 			const container = contextIDs.filter((cID) => cID.name === containerName);
     		//console.log("container: " + JSON.stringify(container));
 			if(!container || container.length < 1){
-				browser.contextualIdentities.create({
+				chrome.contextualIdentities.create({
 					name: `${containerName}`,
 					icon: "circle",
 					color: "yellow"
@@ -39,10 +39,10 @@ function handleMessage(message, sender, sendResponse) {
 		}
 		if (createOpts.cookieStoreId){
 			createOpts.active = !openInBackground;
-		//	console.log(browser.windows.WINDOW_ID_CURRENT);
-			createOpts.windowId = browser.windows.WINDOW_ID_CURRENT;
-			browser.tabs.create(createOpts).catch(() => {
-			   browser.tabs.create({ url });
+		//	console.log(chrome.windows.WINDOW_ID_CURRENT);
+			createOpts.windowId = chrome.windows.WINDOW_ID_CURRENT;
+			chrome.tabs.create(createOpts).catch(() => {
+			   chrome.tabs.create({ url });
 			 });
 		}
 		
@@ -51,7 +51,7 @@ function handleMessage(message, sender, sendResponse) {
   sendResponse({ response: contextIDs });
 }
 
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);
 
 function docidUpdate(contexts) {
 	contextIDs = contexts;
@@ -65,9 +65,9 @@ function onCIDUpdateError(error) {
 }
 
 function updateContextIDs(){
-   browser.contextualIdentities.query({}).then(docidUpdate, onCIDUpdateError);
+   chrome.contextualIdentities.query({}).then(docidUpdate, onCIDUpdateError);
 }
 updateContextIDs();
-browser.contextualIdentities.onCreated.addListener(updateContextIDs);
-browser.contextualIdentities.onRemoved.addListener(updateContextIDs);
-browser.contextualIdentities.onUpdated.addListener(updateContextIDs);
+chrome.contextualIdentities.onCreated.addListener(updateContextIDs);
+chrome.contextualIdentities.onRemoved.addListener(updateContextIDs);
+chrome.contextualIdentities.onUpdated.addListener(updateContextIDs);
