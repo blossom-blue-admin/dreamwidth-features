@@ -4,52 +4,64 @@ let unsavedSettings = {
   "shortcutMaps" : []
 }
 let warnings = [];
+let maxIndex = 0;
 
 function setupTextMaps(codemap) {
   if (!codemap) codemap = {};
   codemap.txt = {
     'start': '<span style="font-family:courier new, monospace">',
-    'end': '</span>'
+    'end': '</span>',
+    'display':true
   };
   codemap.action = {
     'start': '<small>[',
-    'end': ']</small>'
+    'end': ']</small>',
+    'display':true
   };
   codemap.italic = {
     'start': '<em>',
-    'end': '</em>'
+    'end': '</em>',
+    'display':true
   };
   codemap.mdash = {
     'start': '&mdash;',
-    'end': ''
+    'end': '',
+    'display':true
   };
   codemap.bold = {
     'start': '<strong>',
-    'end': '</strong>'
+    'end': '</strong>',
+    'display':true
   };
   codemap.h4 = {
     'start': '<h4>',
-    'end': '</h4>'
+    'end': '</h4>',
+    'display':true
   };
   codemap.h5 = {
     'start': '<h5>',
-    'end': '</h5>'
+    'end': '</h5>',
+    'display':true
   };
   codemap.li = {
     'start': '<li>',
-    'end': '</li>'
+    'end': '</li>',
+    'display':true
   };
   codemap.ul = {
     'start': '<ul>',
-    'end': '</ul>'
+    'end': '</ul>',
+    'display':false
   };
   codemap.link = {
     'start': '<a href="">',
-    'end': '</a>'
+    'end': '</a>',
+    'display':true
   };
   codemap.quote = {
     'start': '<blockquote>',
-    'end': '</blockquote>'
+    'end': '</blockquote>',
+    'display':true
   };
   return codemap;
 }
@@ -109,18 +121,19 @@ function processTextMapForm(form,valid,allInvalid){
   for(pair of data){
     t[pair.name] = pair.value;
   }
-  const [name,start,end] = [t.name,t.start,t.end];
-
+  const [name,start,end,display,index] = [t.name,t.start,t.end,t.display,t.index];
+  console.log({index});
   let warning = false;
   if(!name || !typeof name === "string" || name.length === 0){
     warning = "button must have a name";
-    invalid.push({"name":"","startText":start,"endText":end,"error":"button must have a name","element":form});
+    invalid.push({"name":"","startText":start,"endText":end,"display":display,"error":"button must have a name","element":form});
   } else if (name in valid) {
 
     warning = "button name already used";
     invalid.push({"name":name,"startText":start,"endText":end,"error":"button name already used","element":form});
   } else {
-    valid[name] = {"start":start,"end":end}
+    const dispVal = display ? true : false;
+    valid[name] = {"start":start,"end":end,"display":display,"index":index};
   }
   if(warning){
     warnings.push(warning);
@@ -256,15 +269,39 @@ function removeFromDropdowns(toRemove){
 	
 }
 
+function updateIndex(e){
+  const textMapContainer = $("#textMaps");
+  var $listItems = textMapContainer.children('form').get(); // Convert jQuery object to a native JavaScript array
+
+    // Sort the native JavaScript array using the data attribute values
+    $listItems.sort(function(a, b) {
+        var compA = parseInt($(a).find("[name='index']").val(), 10);
+        var compB = parseInt($(b).find("[name='index']").val(), 10);
+        return compA - compB; // Ascending sort for numbers
+    });
+ $.each($listItems, function(idx, item) {
+        $(textMapContainer).append(item);
+    });
+}
+
 function makeNewTextMapForm(name,text){
  // console.log(`name '${name}', text '${JSON.stringify(text)}'`);
-  const newForm = $("<form class='textMap'></form>");
+ const index = text.index !== undefined && text.index !== null ? text.index : maxIndex + 1 ;
+  maxIndex = maxIndex < index ? index : maxIndex;
+  const newForm = $(`<form class='textMap' data-order="${index}"></form>`);
   if(!name) name = "";
+  
   const nameInput = $(`<input type="text" name="name">`).val(name).on("change",updateTextMapDropdowns);
   newForm.append(nameInput);
   if(!text) text = {"start":"","end":""};
   newForm.append($(`<input type="text" name="start">`).val(text.start));
   newForm.append($(`<input type="text" name="end">`).val(text.end));
+  const indInput = $(`<input type="number" value='${index}' name='index'>`)
+    .on("change",updateIndex);
+  newForm.append(indInput);
+  const isDisplay = text.display ? " checked" : "";
+  const displayBox = $(`<input type="checkbox" name="display" value="display" ${isDisplay}>`);
+  newForm.append(displayBox);
   newForm.append( makeNewRemoveButton("textMap"));
 
  // console.log(`newform '${JSON.stringify(newForm)}'`);
@@ -348,7 +385,17 @@ function displaySettings(){
   //  console.log(`k, i = '${k}','${i}'`);
     textMapContainer.append(makeNewTextMapForm(k,i));
   }
+  var $listItems = textMapContainer.children('form').get(); // Convert jQuery object to a native JavaScript array
 
+    // Sort the native JavaScript array using the data attribute values
+    $listItems.sort(function(a, b) {
+        var compA = parseInt(a.getAttribute('data-order'), 10);
+        var compB = parseInt(b.getAttribute('data-order'), 10);
+        return compA - compB; // Ascending sort for numbers
+    });
+ $.each($listItems, function(idx, item) {
+        $(textMapContainer).append(item);
+    });
   //console.log(`settings.shortcutMaps: ${JSON.stringify(settings.shortcutMaps)}`);
   const shortcutMapContainer = $("#shortcutMaps").text("");
   for(const [k,i] of Object.entries(settings.shortcutMaps)){
@@ -405,6 +452,14 @@ function initialize() {
     	saveUseSettings();
     });
 	
+    // if((results && results.useContainerOpen && results.useContainerOpen === "yes") || (results && !results.useContainerOpen)){
+    // 	$("#use-container-open").prop("checked",true);
+    // }
+    // $("#use-container-open").on("change", (e) =>{
+    // 	saveUseSettings();
+    // });
+	
+	
     $("#new-text").on("click",(e) => {
     	$("select[name='textMap']").prepend('<option value="btn"></option>');
       $("#textMaps").prepend(makeNewTextMapForm());
@@ -438,6 +493,7 @@ function initialize() {
 function saveUseSettings(){
     	const useButtons = $("#use-buttons").prop("checked") ? "yes" : "no";
     	const useShortcuts = $("#use-shortcuts").prop("checked") ? "yes" : "no";
+   // 	const useContainerOpen = $("#use-container-open").prop("checked") ? "yes" : "no";
     	try {
     		chrome.storage.local.set({useButtons,useShortcuts});
     	} catch {
