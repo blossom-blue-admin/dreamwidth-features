@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Dreamwidth features",
+  "name": "Dreamwidth Features",
   "version": "0.8.1",
   "description": "Utility features for Dreamwidth.",
   "browser_specific_settings": {

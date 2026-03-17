@@ -73,7 +73,7 @@ function handleError(error) {
 function doOpenClick(clicked, e) {
     const dwlink = $(clicked).attr('dwlink');
     const charName = $(clicked).attr('charName');
-    const sending = browser.runtime.sendMessage({
+    const sending = chrome.runtime.sendMessage({
         action: 'openThread',
         url: `${ dwlink }`,
         containerName: `${ charName }`,
@@ -95,7 +95,7 @@ function insertSaveLink(msg) {
 
 async function loadContainerOpenSettings() {
     try {
-        const gettingStorageItems = browser.storage.local.get(["useContainerOpen"]);
+        const gettingStorageItems = chrome.storage.local.get(["useContainerOpen"]);
         await gettingStorageItems.then((results) => {
             if (!results.useContainerOpen || results.useContainerOpen === "yes") {
                 useContainerOpen = true;
