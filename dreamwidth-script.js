@@ -228,7 +228,7 @@ function main() {
         if (useButtons) addDWCommentButtons();
         if (useShortcuts) addShortcuts();
         if (useStore) addStore();
-    }, (e) => console.error(e));
+    }, (e) => {console.error(e)});
 }
 
 $(document).ready(async function init() {

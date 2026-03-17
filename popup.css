@@ -9,7 +9,7 @@ html {
 }
 
 body {
- /* width: 300px;*/
+  width: 500px;
   background: rgb(240,240,240);
   margin: 0 auto;
   padding: 2px;
