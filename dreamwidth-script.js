@@ -148,7 +148,7 @@ async function loadDreamwidthSettings() {
             }
         });
     } catch (e) {
-        console.Error(`Error retrieving Dreamwidth Features extension settings, loading defaults.
+        console.log(`Error retrieving Dreamwidth Features extension settings, loading defaults.
  Error: "${e}"`);
         useButtons = true;
         useShortcuts = true;
@@ -255,7 +255,7 @@ function main() {
         if (useButtons) addDWCommentButtons();
         if (useShortcuts) addShortcuts();
         if (useStore) addStore();
-    }, (e) => {console.error(e)});
+    }, (e) => {console.log(e)});
 }
 
 $(document).ready(async function init() {
