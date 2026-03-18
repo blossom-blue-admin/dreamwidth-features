@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dreamwidth Features",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Utility features for Dreamwidth.",
   "browser_specific_settings": {
     "gecko": {
