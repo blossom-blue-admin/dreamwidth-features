@@ -176,7 +176,7 @@ function addDWCommentButtons(){
 	function addText(e) {
 		const buttonId = e.currentTarget.id;
         const id = buttonId.substring(0,buttonId.length - 3);
-		const code = codemap[$(`#${id}`).text()];
+		const code = codemap[id];
 		const sStartTag = code.start;
 		const sEndTag = code.end;
 		let bDouble = true,
