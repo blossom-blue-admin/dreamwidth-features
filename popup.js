@@ -286,7 +286,7 @@ function updateIndex(e){
 
 function makeNewTextMapForm(name,text){
  // console.log(`name '${name}', text '${JSON.stringify(text)}'`);
- const index = text.index !== undefined && text.index !== null ? text.index : maxIndex + 1 ;
+ const index = text && text.index !== undefined && text.index !== null ? parseInt(text.index) : parseInt(maxIndex) + 1 ;
   maxIndex = maxIndex < index ? index : maxIndex;
   const newForm = $(`<form class='textMap' data-order="${index}"></form>`);
   if(!name) name = "";
