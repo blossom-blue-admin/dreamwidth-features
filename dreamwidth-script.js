@@ -11,10 +11,10 @@ let shortcutmap = {};
 let dwStrings = {};
 let useButtons = false;
 let useShortcuts = false;
+//let useDisplayStyle = false;
 let useStore = false;
 let storeData = [];
 let storeCount = 0;
-
 
 function setupMaps(codemap, shortcutmap) {
     codemap.txt = {
@@ -125,13 +125,13 @@ function setupMaps(codemap, shortcutmap) {
 async function loadDreamwidthSettings() {
     let results = undefined;
     try {
-        const gettingStorageItems = browser.storage.local.get(["useButtons", "useShortcuts","useStore", "settings"]);
+        const gettingStorageItems = chrome.storage.local.get(["useButtons", "useShortcuts","useStore","useDisplayStyle", "settings"]);
         await gettingStorageItems.then((results) => {
             useButtons = (!results.useButtons || results.useButtons === "yes");
             useShortcuts = (!results.useShortcuts && !results.useButtons) ||
                 (useButtons && results.useShortcuts === "yes");
             useStore = (!results.useStore || results.useStore === "yes");
-            
+            useDisplayStyle = (!results.useDisplayStyle || results.useDisplayStyle === "yes");
             codemap = {};
             shortcutmap = {};
             if (results.settings) {
@@ -176,7 +176,7 @@ function addDWCommentButtons(){
 	function addText(e) {
 		const buttonId = e.currentTarget.id;
         const id = buttonId.substring(0,buttonId.length - 3);
-		const code = codemap[id];
+		const code = codemap[$(`#${id}`).text()];
 		const sStartTag = code.start;
 		const sEndTag = code.end;
 		let bDouble = true,
@@ -255,7 +255,7 @@ function main() {
         if (useButtons) addDWCommentButtons();
         if (useShortcuts) addShortcuts();
         if (useStore) addStore();
-    }, (e) => {console.log(e)});
+    }, (e) => console.log(e));
 }
 
 $(document).ready(async function init() {
