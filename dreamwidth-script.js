@@ -11,6 +11,7 @@ let shortcutmap = {};
 let dwStrings = {};
 let useButtons = false;
 let useShortcuts = false;
+let useRememberMe = false;
 //let useDisplayStyle = false;
 let useStore = false;
 let storeData = [];
@@ -125,13 +126,14 @@ function setupMaps(codemap, shortcutmap) {
 async function loadDreamwidthSettings() {
     let results = undefined;
     try {
-        const gettingStorageItems = chrome.storage.local.get(["useButtons", "useShortcuts","useStore","useDisplayStyle", "settings"]);
+        const gettingStorageItems = chrome.storage.local.get(["useButtons", "useShortcuts","useStore","useDisplayStyle","useRememberMe", "settings"]);
         await gettingStorageItems.then((results) => {
             useButtons = (!results.useButtons || results.useButtons === "yes");
             useShortcuts = (!results.useShortcuts && !results.useButtons) ||
                 (useButtons && results.useShortcuts === "yes");
             useStore = (!results.useStore || results.useStore === "yes");
             useDisplayStyle = (!results.useDisplayStyle || results.useDisplayStyle === "yes");
+            useRememberMe = (!results.useRememberMe || results.useRememberMe === "yes");
             codemap = {};
             shortcutmap = {};
             if (results.settings) {
@@ -250,10 +252,15 @@ function addShortcuts(){
 
 }
 
+function addRememberMe(){
+    $("#login_remember_me").prop("checked",true);
+}
+
 function main() {
      loadDreamwidthSettings().then((e) => {
         if (useButtons) addDWCommentButtons();
         if (useShortcuts) addShortcuts();
+        if (useRememberMe) addRememberMe();
         if (useStore) addStore();
     }, (e) => console.error(e));
 }

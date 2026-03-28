@@ -458,7 +458,12 @@ function initialize() {
     // $("#use-container-open").on("change", (e) =>{
     // 	saveUseSettings();
     // });
-	
+		if((results && results.useRememberMe && results.useRememberMe === "yes") || (results && !results.useRememberMe)){
+    	$("#use-remember-me").prop("checked",true);
+    }
+    $("#use-remember-me").on("change", (e) =>{
+    	saveUseSettings();
+    });
 	
     $("#new-text").on("click",(e) => {
     	$("select[name='textMap']").prepend('<option value="btn"></option>');
@@ -494,8 +499,9 @@ function saveUseSettings(){
     	const useButtons = $("#use-buttons").prop("checked") ? "yes" : "no";
     	const useShortcuts = $("#use-shortcuts").prop("checked") ? "yes" : "no";
    // 	const useContainerOpen = $("#use-container-open").prop("checked") ? "yes" : "no";
+       	const useRememberMe = $("#use-remember-me").prop("checked") ? "yes" : "no";
     	try {
-    		chrome.storage.local.set({useButtons,useShortcuts});
+    		chrome.storage.local.set({useButtons,useShortcuts,useRememberMe});
     	} catch {
     		displayWarning("Save not completed. Press save button to retry.");
     	}
