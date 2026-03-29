@@ -203,7 +203,12 @@ function addDWCommentButtons(){
 			.prop('id', key + 'btn')
 			.text(key)
 			.on('click', addText);
-        if(codemap[key].display) b.html(codemap[key].start + key + codemap[key].end)
+        if(codemap[key].display){
+            b.html(codemap[key].start + key + codemap[key].end);
+            b.children().on('click',(e)=> {
+                e.preventDefault();
+            });
+        }
 		return b;
 	}
 	let newDiv = $("#addTextContainer");

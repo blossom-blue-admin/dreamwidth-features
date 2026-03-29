@@ -49,10 +49,6 @@ button:active {
 input {
   font-family: sans-serif;
   box-shadow: inset 2px 2px 1px rgba(0,0,0,0.10);
-}
-
-
-input {
   font-size: 1.2rem;
   line-height: 1.5;
 }

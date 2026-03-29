@@ -5,6 +5,7 @@ let unsavedSettings = {
 }
 let warnings = [];
 let maxIndex = 0;
+let maxIndex = 0;
 
 function setupTextMaps(codemap) {
   if (!codemap) codemap = {};
@@ -12,9 +13,13 @@ function setupTextMaps(codemap) {
     'start': '<span style="font-family:courier new, monospace">',
     'end': '</span>',
     'display':true
+    'end': '</span>',
+    'display':true
   };
   codemap.action = {
     'start': '<small>[',
+    'end': ']</small>',
+    'display':true
     'end': ']</small>',
     'display':true
   };
@@ -22,9 +27,13 @@ function setupTextMaps(codemap) {
     'start': '<em>',
     'end': '</em>',
     'display':true
+    'end': '</em>',
+    'display':true
   };
   codemap.mdash = {
     'start': '&mdash;',
+    'end': '',
+    'display':true
     'end': '',
     'display':true
   };
@@ -32,14 +41,20 @@ function setupTextMaps(codemap) {
     'start': '<strong>',
     'end': '</strong>',
     'display':true
+    'end': '</strong>',
+    'display':true
   };
   codemap.h4 = {
     'start': '<h4>',
     'end': '</h4>',
     'display':true
+    'end': '</h4>',
+    'display':true
   };
   codemap.h5 = {
     'start': '<h5>',
+    'end': '</h5>',
+    'display':true
     'end': '</h5>',
     'display':true
   };
@@ -286,7 +301,7 @@ function updateIndex(e){
 
 function makeNewTextMapForm(name,text){
  // console.log(`name '${name}', text '${JSON.stringify(text)}'`);
- const index = text.index !== undefined && text.index !== null ? text.index : maxIndex + 1 ;
+ const index = text && text.index !== undefined && text.index !== null ? parseInt(text.index) : parseInt(maxIndex) + 1 ;
   maxIndex = maxIndex < index ? index : maxIndex;
   const newForm = $(`<form class='textMap' data-order="${index}"></form>`);
   if(!name) name = "";
@@ -464,6 +479,12 @@ function initialize() {
     $("#use-remember-me").on("change", (e) =>{
     	saveUseSettings();
     });
+	if((results && results.useRememberMe && results.useRememberMe === "yes") || (results && !results.useRememberMe)){
+    	$("#use-remember-me").prop("checked",true);
+    }
+    $("#use-remember-me").on("change", (e) =>{
+    	saveUseSettings();
+    });
 	
     $("#new-text").on("click",(e) => {
     	$("select[name='textMap']").prepend('<option value="btn"></option>');
@@ -498,8 +519,8 @@ function initialize() {
 function saveUseSettings(){
     	const useButtons = $("#use-buttons").prop("checked") ? "yes" : "no";
     	const useShortcuts = $("#use-shortcuts").prop("checked") ? "yes" : "no";
-   // 	const useContainerOpen = $("#use-container-open").prop("checked") ? "yes" : "no";
-       	const useRememberMe = $("#use-remember-me").prop("checked") ? "yes" : "no";
+    	const useContainerOpen = $("#use-container-open").prop("checked") ? "yes" : "no";
+    	const useRememberMe = $("#use-remember-me").prop("checked") ? "yes" : "no";
     	try {
     		chrome.storage.local.set({useButtons,useShortcuts,useRememberMe});
     	} catch {
