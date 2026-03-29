@@ -5,7 +5,6 @@ let unsavedSettings = {
 }
 let warnings = [];
 let maxIndex = 0;
-let maxIndex = 0;
 
 function setupTextMaps(codemap) {
   if (!codemap) codemap = {};
@@ -13,13 +12,9 @@ function setupTextMaps(codemap) {
     'start': '<span style="font-family:courier new, monospace">',
     'end': '</span>',
     'display':true
-    'end': '</span>',
-    'display':true
   };
   codemap.action = {
     'start': '<small>[',
-    'end': ']</small>',
-    'display':true
     'end': ']</small>',
     'display':true
   };
@@ -27,13 +22,9 @@ function setupTextMaps(codemap) {
     'start': '<em>',
     'end': '</em>',
     'display':true
-    'end': '</em>',
-    'display':true
   };
   codemap.mdash = {
     'start': '&mdash;',
-    'end': '',
-    'display':true
     'end': '',
     'display':true
   };
@@ -41,20 +32,14 @@ function setupTextMaps(codemap) {
     'start': '<strong>',
     'end': '</strong>',
     'display':true
-    'end': '</strong>',
-    'display':true
   };
   codemap.h4 = {
     'start': '<h4>',
     'end': '</h4>',
     'display':true
-    'end': '</h4>',
-    'display':true
   };
   codemap.h5 = {
     'start': '<h5>',
-    'end': '</h5>',
-    'display':true
     'end': '</h5>',
     'display':true
   };
