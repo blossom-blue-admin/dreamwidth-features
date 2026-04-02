@@ -223,6 +223,18 @@ function addDWCommentButtons(){
 	$(`${dwStrings.formID} .qr-markup`).append(newDiv);
 }
 
+function skipPastEnd(code){
+    const endText = codemap[code.substring(0,code.length - 3)].end;
+    const input = $("textarea#body")[0];
+    const afterText = input.value.slice(input.selectionEnd, input.selectionEnd + endText.length) ;
+    console.log({afterText});
+    if(afterText === endText){
+        input.setSelectionRange(input.selectionEnd + endText.length, input.selectionEnd + endText.length);
+        return true;
+    }
+    return false;
+}
+
 function addShortcuts(){
 	$(document).on(
 		'keydown',
@@ -249,6 +261,8 @@ function addShortcuts(){
 					return;
 				}
 				e.preventDefault();
+                if(skipPastEnd(shortcutmap[pressed].textMap)) return;
+                
 				$(`#${shortcutmap[pressed].textMap}`).click();
 				return false
 			}
