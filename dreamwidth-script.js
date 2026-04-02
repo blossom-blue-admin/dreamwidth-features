@@ -225,6 +225,7 @@ function addDWCommentButtons(){
 
 function skipPastEnd(code){
     const endText = codemap[code.substring(0,code.length - 3)].end;
+    if(!endText || endText.length === 0) return false;
     const input = $("textarea#body")[0];
     const afterText = input.value.slice(input.selectionEnd, input.selectionEnd + endText.length) ;
     console.log({afterText});
