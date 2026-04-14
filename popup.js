@@ -310,7 +310,7 @@ function makeNewTextMapForm(name,text){
 
 function makeNewTextMapDropdown(selected){
 //	console.log(`selected ${selected} '${JSON.stringify(selected)}'`);
-  if(!settings.textMap) settings.textMap = {};
+  if(!settings.textMaps) settings.textMaps = {};
   const newSelect = $(`<select name="textMap"></select>`);
   for(const [key,value] of Object.entries(settings.textMaps)){
     const isSelected = `${key}btn` === selected ? " selected" : "";
