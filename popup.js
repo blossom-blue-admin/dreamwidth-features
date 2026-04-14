@@ -93,7 +93,6 @@ function setupShortcutMaps(shortcutmap) {
 //
 // addBtn.addEventListener('click', addNote);
 // clearBtn.addEventListener('click', clearAll);
-
 /* generic error handler */
 function onError(error) {
   console.log(error);
@@ -312,6 +311,7 @@ function makeNewTextMapDropdown(selected){
 //	console.log(`selected ${selected} '${JSON.stringify(selected)}'`);
   if(!settings.textMaps) settings.textMaps = {};
   const newSelect = $(`<select name="textMap"></select>`);
+  //console.log({settings})
   for(const [key,value] of Object.entries(settings.textMaps)){
     const isSelected = `${key}btn` === selected ? " selected" : "";
     newSelect.append($(`<option value="${key}btn"${isSelected}>${key}</option>`));
@@ -381,6 +381,8 @@ function makeNewRemoveButton(textMap){
 function displaySettings(){
   const textMapContainer = $("#textMaps").text("");
   //console.log(`settings.textMaps: ${JSON.stringify(settings.textMaps)}`);
+  if(!settings) settings = {};
+  if(!settings.textMaps) settings.textMaps = {}
   for(const [k,i] of Object.entries(settings.textMaps)){
   //  console.log(`k, i = '${k}','${i}'`);
     textMapContainer.append(makeNewTextMapForm(k,i));
@@ -398,6 +400,8 @@ function displaySettings(){
     });
   //console.log(`settings.shortcutMaps: ${JSON.stringify(settings.shortcutMaps)}`);
   const shortcutMapContainer = $("#shortcutMaps").text("");
+
+  if(!settings.shortcutMaps) settings.shortcutMaps = {}
   for(const [k,i] of Object.entries(settings.shortcutMaps)){
 
 //    console.log(`k, i = '${k}','${JSON.stringify(i)}'`);
